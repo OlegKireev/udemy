@@ -23,6 +23,7 @@
     "del": "^5.1.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-htmlacademy": "^0.5.2",
     "eslint-plugin-import": "^2.20.2",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
@@ -49,7 +50,6 @@
     "uglify": "^0.1.5"
   },
   "dependencies": {
-    "eslint-config-htmlacademy": "^0.5.2",
     "js-yaml": "^3.13.1",
     "uglify-js": "^3.8.1",
     "underscore": "^1.10.2",
