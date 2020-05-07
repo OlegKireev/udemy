@@ -108,18 +108,65 @@ let appData = {
   },
   chooseIncome() {
     let items = prompt(`Что принесет дополнительный доход? (Перечислите через запятую)`, ``);
-    this.income = items.split(`, `);
+    // Пока нажата кнопка отмена или введено пустое значение
+    while (items === null || items === ``) {
+      alert('Введенное значение не может быть пустым');
+      items = prompt(`Что принесет дополнительный доход? (Перечислите через запятую)`, ``);
+    }
+    // Пока тип введенных данных не строка
+    while (typeof (items) !== `string`) {
+      alert('Введенное значение не может состоять только из цифр.');
+      items = prompt(`Что принесет дополнительный доход? (Перечислите через запятую)`, ``);
+    }
+    // Записываем все что ввел пользователь в массив, разделяя элементы запятой
+    this.income = items.split(`,`);
+    // Добавдяем еще одно значене
     this.income.push(prompt(`Может что-то еще?`, ``));
+    // Упорядочиваем
     this.income.sort();
-  }
 
+    // Собираем сообщение для вывода
+    let mess;
+    this.income.forEach(function (item, index, arr) {
+      // Действия при первом проходе цикла
+      if (index === 0) {
+        mess = (index + 1) + `. ` + item + `, `;
+      // Действия при последнем прохоже цикла
+      } else if (index === (arr.length - 1)) {
+        mess += (index + 1) + `. ` + item + `.`;
+      // Действия при всех остальных проходах циклов
+      } else {
+        mess += (index + 1) + `. ` + item + `, `;
+      }
+      console.log(mess);
+    });
+
+    // Выводим сообщение
+    let message = this.income.join(``, ``);
+    alert(`Способы доп. заработка: ` + mess);
+  },
+  displayData() {
+    let mess;
+    let i = 0;
+    for (let key in this) {
+      if (i === 0) {
+        mess = key + ` `;
+      } else {
+        mess += key + ` `;
+      }
+      i++;
+    }
+    alert(`Наша программа включает в себя данные: ` + mess);
+  }
 };
 
-appData.chooseExpenses();
-appData.chooseOptExpenses();
-appData.countDailyBudget();
-appData.countBudgetLevel();
-appData.checkSavings();
-appData.chooseIncome();
+
+// appData.chooseExpenses();
+// appData.chooseOptExpenses();
+// appData.countDailyBudget();
+// appData.countBudgetLevel();
+// appData.checkSavings();
+// appData.chooseIncome();
+appData.displayData();
 
 console.log(appData);
