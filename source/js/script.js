@@ -1,5 +1,6 @@
 'use strict';
 
+// Табы
 (function () {
 
   window.addEventListener(`DOMContentLoaded`, function () {
@@ -47,12 +48,13 @@
 
 })();
 
+// Таймер
 (function () {
 
   window.addEventListener(`DOMContentLoaded`, function () {
 
     // Дата до которой идет отсчет таймера
-    let dedline = `2020-05-12T18:00`;
+    let dedline = `2020-05-15T18:00`;
 
     function getTimeRemaining(endtime) {
 
@@ -138,4 +140,54 @@
 
   });
 
+})();
+
+// Модальное окно
+(function () {
+
+  window.addEventListener(`DOMContentLoaded`, function () {
+
+    const ESC_KEYCODE = 27;
+
+    let moreBtn = document.querySelector(`.more`);
+    let tabsMoreBtn = document.querySelectorAll(`.description-btn`);
+    let modal = document.querySelector(`.overlay`);
+    let closeBtn = modal.querySelector(`.popup-close`);
+
+    let onModalEscKeydown = function (evt) {
+      if (evt.keyCode === ESC_KEYCODE) {
+        closeModal();
+      }
+    };
+
+    function openModal() {
+      window.addEventListener(`keydown`, onModalEscKeydown);
+      modal.style.display = `block`;
+      moreBtn.classList.add(`more-splash`);
+      document.body.style.overflow = `hidden`;
+    }
+
+    function closeModal() {
+      window.removeEventListener(`keydown`, onModalEscKeydown);
+      modal.style.display = ``;
+      moreBtn.classList.remove(`more-splash`);
+      document.body.style.overflow = ``;
+    }
+
+    moreBtn.addEventListener(`click`, function () {
+      openModal();
+    });
+
+    closeBtn.addEventListener(`click`, function () {
+      closeModal();
+    });
+
+    tabsMoreBtn.forEach(function (btn) {
+      btn.addEventListener(`click`, function () {
+        openModal();
+      });
+    });
+
+
+  });
 })();
