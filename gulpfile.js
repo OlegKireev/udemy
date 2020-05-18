@@ -36,7 +36,7 @@ gulp.task('browser-sync', function() {
 
 // Конвертация SCSS в CSS
 gulp.task('sass', function() {
-	return gulp.src('source/sass/**/*.scss') // Берем все .scss файлы в данной папке
+	return gulp.src('source/scss/**/*.scss') // Берем все .scss файлы в данной папке
 	.pipe(sass({outputStyle: 'expanded'}).on("error", notify.onError()))
 	.pipe(autoprefixer(['last 2 versions'])) // Расставляем префиксы к свойствам
 	.pipe(gulp.dest('build/css/')) // Кладем в папку сборки
@@ -99,7 +99,8 @@ gulp.task('copy', function() {
 	return gulp.src([
 		'source/fonts/**/*.{woff,woff2}', // Все файлы шрифтов
     'source/*.ico', // Все файлы .ico
-    'source/server/**/*.*'
+    'source/server/**/*.*',
+    'source/server.php'
     ], {
 		base: 'source' // Указываем исходную папку, для того чтобы весь путь к файлу не затерся
     })

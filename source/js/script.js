@@ -29,7 +29,8 @@
     // Делигируем обработчик событий на контейнер с кнопками
     tabBtnContainer.addEventListener(`click`, function (evt) {
       let target = evt.target;
-      // если событие произошло, и мы кликнули по элементу с нужным классом
+      // если событие произошло, и мы кликнули по элементу
+      //  с нужным классом
       if (target && target.classList.contains(`info-header-tab`)) {
         // запускаем цикл до длины псевдомассива всех табов
         for (let i = 0; i < tabContent.length; i++) {
@@ -58,17 +59,20 @@
 
     function getTimeRemaining(endtime) {
 
-      // Кол-во милисекунд до дедлайна (от даты дедлайна отнимаем текущую дату)
+      // Кол-во милисекунд до дедлайна (от даты дедлайна
+      // отнимаем текущую дату)
       let t = Date.parse(endtime) - Date.parse(new Date());
-      // Делим мсек. до дедлайна на 1000 - получаем секунды, получаем остаток от
-      // деления на 60 и получаем число не больше 60
+      // Делим мсек. до дедлайна на 1000 - получаем секунды,
+      // получаем остаток от деления на 60 и получаем число
+      // не больше 60
       let seconds = Math.floor((t / 1000 % 60));
       let minutes = Math.floor((t / 1000 / 60 % 60));
       let hours = Math.floor(t / 1000 / 60 / 60);
       // Если нужны дни
       // let days = Math.floor(t / 1000 / 60 % 24);
 
-      // Возвращаем все значения в виде объекта для удобного обращения к ним
+      // Возвращаем все значения в виде объекта для удобного
+      // обращения к ним
       return {
         'total': t,
         'hours': hours,
@@ -94,10 +98,9 @@
         let t = getTimeRemaining(endtime);
 
         // Обновляем числа на странице
-        // Часы
         // Добавляем один "0" если число меньше 9
         if (t.hours < 10) {
-          hours.textContent = `0` + String(t.hours);
+          hours.textContent = `0${String(t.hours)}`;
         // Если значение пустое ставим "00"
         } else if (t.hours === 0) {
           hours.textContent = `00`;
@@ -108,7 +111,7 @@
 
         // Минуты
         if (t.minutes < 10) {
-          minutes.textContent = `0` + String(t.minutes);
+          minutes.textContent = `0${String(t.minutes)}`;
         } else if (t.minutes === 0) {
           minutes.textContent = `00`;
         } else {
@@ -117,7 +120,7 @@
 
         // Секунды
         if (t.seconds < 10) {
-          seconds.textContent = `0` + String(t.seconds);
+          seconds.textContent = `0${String(t.seconds)}`;
         } else if (t.seconds === 0) {
           seconds.textContent = `00`;
         } else {
@@ -145,7 +148,7 @@
 // Модальное окно
 (function () {
 
-  window.addEventListener(`DOMContentLoaded`, function () {
+  window.addEventListener(`DOMContentLoaded`, () => {
 
     const ESC_KEYCODE = 27;
 
@@ -174,20 +177,144 @@
       document.body.style.overflow = ``;
     }
 
-    moreBtn.addEventListener(`click`, function () {
+    moreBtn.addEventListener(`click`, () => {
       openModal();
     });
 
-    closeBtn.addEventListener(`click`, function () {
+    closeBtn.addEventListener(`click`, () => {
       closeModal();
     });
 
-    tabsMoreBtn.forEach(function (btn) {
-      btn.addEventListener(`click`, function () {
+    tabsMoreBtn.forEach((btn) => {
+      btn.addEventListener(`click`, () => {
         openModal();
       });
     });
 
+
+  });
+})();
+
+// Формы
+
+(function () {
+
+  window.addEventListener(`DOMContentLoaded`, () => {
+
+    // Находим элементы формы на странице
+    let modalForm = document.querySelector(`.main-form`);
+    let inputs = modalForm.querySelectorAll(`input`);
+
+    let contactForm = document.querySelector(`#form`);
+    let contactInputs = contactForm.querySelectorAll(`input`);
+
+    // Создаем узел для помещения туда сообщения о статусе
+    // загрузки
+    let statusMessage = document.createElement(`div`);
+
+    // Записываем в объект все сообщения о процессе загрузки
+    let message = {
+      loading: `Загрузка...`,
+      success: `Спасибо. Мы скоро с вами свяжемся!`,
+      failure: `Что-то пошло не так...`
+    };
+
+    // Обработчик для модальной формы
+    let onModalFormSubmit = function (evt) {
+      // Отключаем перезагрузку страницы
+      evt.preventDefault();
+
+      // Добавляем в форму узел с сообщением о статусе загрузки
+      modalForm.append(statusMessage);
+
+      // Добавляем класс узлу
+      statusMessage.classList.add(`status`);
+
+      serverRequest(modalForm);
+
+      // Обнуляем значение у всех инпутов в форме
+      inputs.forEach((input) => {
+        input.value = ``;
+      });
+    };
+
+    // Обработчик для нижней формы
+    let onContactFormSubmit = function (evt) {
+      // Отключаем перезагрузку страницы
+      evt.preventDefault();
+
+      // Добавляем в форму узел с сообщением о статусе загрузки
+      contactForm.append(statusMessage);
+
+      // Добавляем класс узлу
+      statusMessage.classList.add(`status`);
+      statusMessage.style.color = `#fff`;
+      statusMessage.style.marginTop = `20px`;
+
+      serverRequest(contactForm);
+
+      // Обнуляем значение у всех инпутов в форме
+      contactInputs.forEach((input) => {
+        input.value = ``;
+      });
+    };
+
+    // Запрос к серверу
+    let serverRequest = function (form) {
+      // Записываем с помоощью конструктора в переменную новый
+      // запрос
+      let request = new XMLHttpRequest();
+
+      // Адресс сервера
+      let serverUrl = `server.php`;
+
+      // Открываем запрос на сервер, указывая метод и адрес
+      // сервера
+      request.open(`POST`, serverUrl);
+
+      // Указываем тип данных передающихся по запросу
+      request.setRequestHeader(`Content-type`, `application/json; charset=utf-8`);
+
+      // Записываем с помощью констрктора в переменную данные
+      //  формы которые ввел пользователь
+      let formData = new FormData(form);
+
+      // Создаем объект для помещения в него данных из формы
+      let obj = {};
+
+      // Проходимся по объекту с пользовательскими данными
+      // и записываем их в обычный js-объект
+      formData.forEach((value, key) => {
+        obj[key] = value;
+      });
+
+      // Преобразовываем объект в JSON формат
+      let json = JSON.stringify(obj);
+
+      // Отправляем запрос на сервер
+      request.send(json);
+
+      // Вешаем обработчик изменения статуса запроса на наш
+      // отправленный запрос
+      request.addEventListener(`readystatechange`, () => {
+
+        // Если запрос еще не вернулся
+        if (request.readyState < 4) {
+          statusMessage.textContent = message.loading;
+
+          // Если запрос вернулся без ошибок
+        } else if (request.readyState === 4 && request.status === 200) {
+          statusMessage.textContent = message.success;
+
+          // Во всех других случаях
+        } else {
+          statusMessage.textContent = `${message.failure}. Номер ошибки:${request.status}`;
+        }
+      });
+    };
+
+    modalForm.addEventListener(`submit`, onModalFormSubmit);
+    contactForm.addEventListener(`submit`, onContactFormSubmit);
 
   });
 })();
