@@ -52,7 +52,7 @@
   "dependencies": {
     "js-yaml": "^3.13.1",
     "uglify-js": "^3.8.1",
-    "underscore": "^1.10.2",
+    "underscore": "^1.12.1",
     "underscore.string": "^3.3.5"
   }
 }
